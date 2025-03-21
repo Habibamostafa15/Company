@@ -1,7 +1,8 @@
 using System.Diagnostics;
+using Company.PL.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Company.G02.PL.Controllers;
+namespace Company.PL.Controllers;
 
 public class HomeController : Controller
 {
