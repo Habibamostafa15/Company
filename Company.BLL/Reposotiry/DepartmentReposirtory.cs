@@ -14,29 +14,29 @@ namespace Company.BLL.Reposotiry
       
         private DBContext context;   //NULL
 
-        public DepartmentReposirtory() 
+        public DepartmentReposirtory(DBContext dBContext) 
         
         {
-            context = new DBContext();
+            context = dBContext;
             
             }
 
-       
-        IEnumerable<Department> IDepartmentRepository.getAll()
+
+        public IEnumerable<Department> getAll()
         {
             return context.Departments.ToList();
 
         }
 
 
-        Department? IDepartmentRepository.GetDepartment(int id)
+      public  Department? GetDepartment(int id)
         {
             return context.Departments.Find(id);
 
 
         }
 
-        int IDepartmentRepository.add(Department model)
+       public int add(Department model)
         {
             context.Departments.Add(model);
             return context.SaveChanges();
@@ -44,14 +44,14 @@ namespace Company.BLL.Reposotiry
         }
 
 
-        int IDepartmentRepository.Update(Department model)
+      public  int Update(Department model)
         {
             context.Departments.Update(model);
             return context.SaveChanges();
         }
 
 
-        int IDepartmentRepository.delete(Department model)
+      public  int delete(Department model)
         {
             context.Departments.Remove(model);
             return context.SaveChanges();
