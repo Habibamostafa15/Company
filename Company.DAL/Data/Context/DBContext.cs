@@ -11,8 +11,8 @@ namespace Company.DAL.Data.Context
 {
     public class DBContext : DbContext
     {
-        public DBContext() : base ()
-            {
+        public DBContext(DbContextOptions <DBContext> options ) : base (options)
+            {    
 
 
         }
@@ -25,12 +25,12 @@ namespace Company.DAL.Data.Context
         }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=.;Database=companyG02;Trusted_Connection=True;TrustServerCertificate = True");
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("Server=.;Database=companyG02;Trusted_Connection=True;TrustServerCertificate = True");
 
 
-        }
+        //}
 
 
      
