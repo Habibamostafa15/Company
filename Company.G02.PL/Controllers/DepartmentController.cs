@@ -19,8 +19,8 @@ namespace Company.PL.Controllers
         {
           //  DepartmentReposirtory departmentReposirtory = new DepartmentReposirtory();
             //var Deparmets = _departmentReposirtory.
-          // var Deparmets = departmentReposirtory.getAll();
-            return View();
+           var Deparmets = _departmentReposirtory.getAll();
+            return View(Deparmets);
         }
     }
 }
