@@ -1,4 +1,5 @@
-﻿using Company.DAL.Entites;
+﻿using Company.DAL.Dtos;
+using Company.DAL.Entites;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -36,7 +37,7 @@ namespace Company.DAL.Data.Context
      
 
         public DbSet<Department> Departments { get; set; }
-
+        public DbSet<Employee>   Employees { get; set; }
 
     }
 }
