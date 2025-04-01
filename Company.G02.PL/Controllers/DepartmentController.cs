@@ -5,6 +5,7 @@ using Company.BLL.Interfaces;
 using Company.DAL.Dtos;
 using Company.DAL.Entites;
 using NuGet.Protocol.Core.Types;
+using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 namespace Company.PL.Controllers
 {    // MVC Controller
     public class DepartmentController : Controller
@@ -48,7 +49,13 @@ namespace Company.PL.Controllers
 
 
 
+        public IActionResult Details(int? id)
+        { if (id is null) return BadRequest("InValid Id");
+            var department = _departmentReposirtory.GetDepartment(id.Value);
+            if (department is null) return NotFound(new { StatusCode = 404, Message = $"department with id {id} is not found" });
+            return View(department);
 
+        }
     }
     }
 
