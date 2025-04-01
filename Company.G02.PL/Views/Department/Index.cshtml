@@ -32,7 +32,7 @@
                   <td>@item.name</td>
                     <td>@item.createAt</td>
                     <td>
-                        <a asp-action="Details" class="btn btn-warning">details</a>
+                        <a asp-action="Details" asp-route-id="@item.id" class="btn btn-warning">details</a>
                     </td>
                     <td> <a asp-action="Update" class="btn btn-success">update</a>  </td>
                     <td> <a asp-action="Delete" class="btn btn-danger">delete</a>    </td>
