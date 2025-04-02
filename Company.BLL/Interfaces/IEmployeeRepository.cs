@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Company.BLL.Interfaces
 {
-  public interface IEmployeeRepository
+    public interface IEmployeeRepository : IGenericRepository<Employee>
     {
 
-        IEnumerable<Employee> getAll();
-        Employee? Get(int id);   // make it nullable 
-        int add(Employee model);
-        int Update(Employee model);
+        //IEnumerable<Employee> getAll();
+        //Employee? Get(int id);   // make it nullable 
+        //int add(Employee model);
+        //int Update(Employee model);
 
-        int delete(Employee model);
+        //int delete(Employee model);
 
 
     }
