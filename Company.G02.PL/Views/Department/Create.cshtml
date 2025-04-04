@@ -5,6 +5,9 @@
 
 <h1>Create Department</h1>
 <form asp-action="Create">
+
+
+    @* <partial name="DeparmentPartialVews/CreateEditPartialView" /> *@
     <div class="my-3">
         <label asp-for="code" class="col-form-label"></label>
         <input asp-for="code" class="form-control" />
@@ -19,10 +22,19 @@
         <label asp-for="createAt" class="col-form-label"></label>
         <input asp-for="createAt" class="form-control" />
         <span asp-validation-for="createAt" class="text-danger"></span>
-    </div>
+
+
     <div class="my-3">
         <input type="submit" value="Create" class="btn btn-success" />
         <a asp-action="Index" class="btn btn-secondary">Back To Departments</a>
     </div>
 </form>
 
+
+@section validation{
+
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+
+}
