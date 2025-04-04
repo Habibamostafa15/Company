@@ -17,6 +17,8 @@ namespace Company.PL
             builder.Services.AddControllersWithViews();  // register built in serices in MVC
           
             builder.Services.AddScoped<IDepartmentRepository,DepartmentReposirtory>();  //Allow DI in departmentRepoository
+            builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();  //Allow DI in EmployeeRepository
+
             builder.Services.AddDbContext<DBContext>(Options =>
             {
                 Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
