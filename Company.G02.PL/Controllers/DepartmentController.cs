@@ -49,7 +49,7 @@ namespace Company.PL.Controllers
         [HttpGet]
         public IActionResult Details(int? id,string viewName="Details")
         { if (id is null) return BadRequest("InValid Id");
-            var department = _departmentReposirtory.GetDepartment(id.Value);
+            var department = _departmentReposirtory.Get(id.Value);
             if (department is null) return NotFound(new { StatusCode = 404, Message = $"department with id {id} is not found" });
             return View(viewName,department);
 
@@ -71,7 +71,7 @@ namespace Company.PL.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Edit( [FromRoute] int id ,Department department)
         {     if (ModelState.IsValid)
-            {     if (id == department.id)
+            {     if (id == department.Id)
                 {
                     var count = _departmentReposirtory.Update(department);
                     if (count > 0)
@@ -102,7 +102,7 @@ namespace Company.PL.Controllers
         {
             if (ModelState.IsValid)
             {
-                if (id == department.id)
+                if (id == department.Id)
                 {
                     var count = _departmentReposirtory.delete(department);
                     if (count > 0)

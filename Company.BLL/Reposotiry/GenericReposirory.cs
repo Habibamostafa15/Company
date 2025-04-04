@@ -31,7 +31,7 @@ namespace Company.BLL.Reposotiry
         {
             _dBContext.Set<T>().Add(model);
             return _dBContext.SaveChanges();
-        }
+        }     
 
         public int Update(T model)
         {
