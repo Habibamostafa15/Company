@@ -2,6 +2,7 @@ using Company.BLL.Interfaces;
 using Company.BLL.Reposotiry;
 using Company.DAL.Data.Context;
 using Company.DAL.Entites;
+using Company.PL.Services;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,8 @@ namespace Company.PL
                 
                 
                 );
+            builder.Services.AddAutoMapper(typeof(EmployeeProfile));
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

@@ -12,5 +12,7 @@ namespace Company.DAL.Entites
       public string code { set; get; }
         public string name { set; get; }
         public DateTime createAt { set; get; }
+        public List<Employee> Employees { get; set; }
+
     }
 }

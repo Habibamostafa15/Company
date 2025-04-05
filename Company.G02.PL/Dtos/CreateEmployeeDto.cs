@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Company.DAL.Entites;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -10,6 +11,9 @@ namespace Company.DAL.Dtos
 {
    public class CreateEmployeeDto
     {
+        public int? DepartmentId { get; set; }
+
+
         [Required(ErrorMessage = "Name is Required !!")]
         public string Name { get; set; }
 
