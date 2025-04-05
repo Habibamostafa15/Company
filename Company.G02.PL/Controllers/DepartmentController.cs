@@ -43,7 +43,9 @@ namespace Company.PL.Controllers
                     name = model.name,
                     createAt = model.createAt
                 };
-                int count = _unitOfWork.DepartmentRepository.add(department);
+              _unitOfWork.DepartmentRepository.add(department);
+                var count = _unitOfWork.Complete();
+
                 if (count > 0)
                     return RedirectToAction(nameof(Index));
             }
@@ -76,7 +78,10 @@ namespace Company.PL.Controllers
         {     if (ModelState.IsValid)
             {     if (id == department.Id)
                 {
-                    var count = _unitOfWork.DepartmentRepository.Update(department);
+                    _unitOfWork.DepartmentRepository.Update(department);
+
+                    var count = _unitOfWork.Complete();
+
                     if (count > 0)
                     {
                         return RedirectToAction(nameof(Index));
@@ -107,7 +112,8 @@ namespace Company.PL.Controllers
             {
                 if (id == department.Id)
                 {
-                    var count = _unitOfWork.DepartmentRepository.delete(department);
+               _unitOfWork.DepartmentRepository.delete(department);
+                    var count = _unitOfWork.Complete();
                     if (count > 0)
                     {
                         return RedirectToAction(nameof(Index));

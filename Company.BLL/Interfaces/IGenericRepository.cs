@@ -12,8 +12,8 @@ namespace Company.BLL.Interfaces
     {
         IEnumerable<T> getAll();
         T? Get(int id);   
-        int add(T model);
-        int Update(T model);
-        int delete(T model);
+       void add(T model);
+        void Update(T model);
+        void delete(T model);
     }
 }

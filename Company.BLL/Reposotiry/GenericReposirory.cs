@@ -27,22 +27,20 @@ namespace Company.BLL.Reposotiry
         {
             return _dBContext.Set<T>().Find(id);
         }
-        public int add(T model)
+        public void add(T model)
         {
             _dBContext.Set<T>().Add(model);
-            return _dBContext.SaveChanges();
         }     
 
-        public int Update(T model)
+        public void Update(T model)
         {
             _dBContext.Set<T>().Update(model);
-            return _dBContext.SaveChanges();
         }
 
-        public int delete(T model)
+        public void delete(T model)
         {
             _dBContext.Set<T>().Remove(model);
-            return _dBContext.SaveChanges();
+           
         }
 
        

@@ -70,7 +70,9 @@ namespace Company.PL.Controllers
 
                 var Employee = _mapper.Map<Employee>(model);
 
-                int count = _unitOfWork.EmployeeRepository.add(Employee);
+                 _unitOfWork.EmployeeRepository.add(Employee);
+                var count = _unitOfWork.Complete();
+
                 if (count > 0)
                 {
                     TempData["Massage"] = "Employee is Created successfully!!!";
@@ -138,8 +140,10 @@ namespace Company.PL.Controllers
                     Phone = model.Phone,
                     Salary = model.Salary
                 };
-                var count = _unitOfWork.EmployeeRepository.Update(Employee);
-                    if (count > 0)
+           _unitOfWork.EmployeeRepository.Update(Employee);
+                var count = _unitOfWork.Complete();
+
+                if (count > 0)
                     {
                         return RedirectToAction(nameof(Index));
                     }
@@ -170,7 +174,9 @@ namespace Company.PL.Controllers
             {
                 if (id == employee.Id)
                 {
-                    var count = _unitOfWork.EmployeeRepository.delete(employee);
+                   _unitOfWork.EmployeeRepository.delete(employee);
+                    var count = _unitOfWork.Complete();
+
                     if (count > 0)
                     {
                         return RedirectToAction(nameof(Index));
