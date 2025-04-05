@@ -9,8 +9,9 @@ using System.Threading.Tasks;
 
 namespace Company.DAL.Dtos
 {
-   public class CreateEmployeeDto
+   public class CreateEmployeeDto :BaseEntity
     {
+       
         public int? DepartmentId { get; set; }
 
 
@@ -41,6 +42,10 @@ namespace Company.DAL.Dtos
 
         [DisplayName("Date Of Create")]
         public DateTime CreateAt { get; set; }
+
+        public string? ImageName { get; set; }
+
+        public IFormFile? Image { get; set; }
 
 
     }

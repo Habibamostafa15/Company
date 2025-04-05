@@ -1,15 +1,18 @@
 ﻿using Company.BLL.Interfaces;
 using Company.DAL.Data.Context;
 using Company.DAL.Dtos;
+using Company.DAL.Entites;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Company.BLL.Reposotiry
 {
-    public class GenericReposirory<T> : IGenericRepository<T> where T : BaseEntity
+    public class GenericReposirory<TEntity> : IGenericRepository<TEntity> where TEntity : BaseEntity
     {
         private readonly DBContext _dBContext;
 
@@ -18,33 +21,45 @@ namespace Company.BLL.Reposotiry
             _dBContext = dBContext;
         }
 
-        public IEnumerable<T> getAll()
+
+
+        public async Task<IEnumerable<TEntity>> getAllAsync()
         {
-            return _dBContext.Set<T>().ToList();
+            if (typeof(TEntity) == typeof(Employee))
+            {
+                return (IEnumerable<TEntity>)await _dBContext.Employees.Include(e => e.department).ToListAsync();
+            }
+
+            return await _dBContext.Set<TEntity>().ToListAsync();
         }
 
-        public T? Get(int id)
-        {
-            return _dBContext.Set<T>().Find(id);
-        }
-        public void add(T model)
-        {
-            _dBContext.Set<T>().Add(model);
-        }     
+        public async Task<TEntity?> GetAsync(int id)
+        {     if (typeof(TEntity) == typeof(Employee))
+          { 
+                return  await  _dBContext.Employees.Include(E => E.department).FirstOrDefaultAsync(E => E.Id == id) as TEntity;
 
-        public void Update(T model)
-        {
-            _dBContext.Set<T>().Update(model);
+            }
+          
+            return _dBContext.Set<TEntity>().Find(id);
         }
-
-        public void delete(T model)
+        public async Task addAsync(TEntity model)
         {
-            _dBContext.Set<T>().Remove(model);
-           
+            await _dBContext.Set<TEntity>().AddAsync(model);
         }
 
-       
+        public void Update(TEntity model)
+        {
+            _dBContext.Set<TEntity>().Update(model);
+        }
 
-       
+        public void deletes(TEntity model)
+        {
+            _dBContext.Set<TEntity>().Remove(model);
+        }
+
+
+
+
+
     }
 }

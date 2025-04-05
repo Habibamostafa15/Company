@@ -7,7 +7,8 @@ namespace Company.PL.Services
     {
         public EmployeeProfile()
         {
-            CreateMap<CreateEmployeeDto, Employee>();
+            CreateMap<CreateEmployeeDto, Employee>().ReverseMap ();
+
 
 
         }
