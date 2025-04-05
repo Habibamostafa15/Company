@@ -21,9 +21,9 @@ namespace Company.BLL.Reposotiry
         }
 
     
-        public List<Employee> GetByName(string Name)
+        public async Task<List<Employee>> GetByNameAsync(string Name)
         {
-            return _dBContext.Employees.Include(E=>E.department).Where(E => E.Name.ToLower().Contains(Name.ToLower())).ToList(); 
+            return await _dBContext.Employees.Include(E=>E.department).Where(E => E.Name.ToLower().Contains(Name.ToLower())).ToListAsync(); 
 
         }
     }

@@ -7,8 +7,9 @@ using System.Threading.Tasks;
 
 namespace Company.DAL.Dtos
 {
-  public  class CreateDepartmentDto
+  public  class CreateDepartmentDto: BaseEntity
     {
+  
         [Required (ErrorMessage ="Code is requierd")]
         public string code { set; get; }
         [Required(ErrorMessage = "Name is requierd")]
