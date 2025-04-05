@@ -1,3 +1,4 @@
+using Company.BLL;
 using Company.BLL.Interfaces;
 using Company.BLL.Reposotiry;
 using Company.DAL.Data.Context;
@@ -19,7 +20,7 @@ namespace Company.PL
           
             builder.Services.AddScoped<IDepartmentRepository,DepartmentReposirtory>();  //Allow DI in departmentRepoository
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();  //Allow DI in EmployeeRepository
-
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             builder.Services.AddDbContext<DBContext>(Options =>
             {
                 Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));

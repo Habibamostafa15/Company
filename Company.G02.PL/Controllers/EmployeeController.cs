@@ -12,18 +12,13 @@ namespace Company.PL.Controllers
 {
     public class EmployeeController : Controller
     {
-        private readonly IEmployeeRepository _EmployeeReposirtory;
-        private readonly IDepartmentRepository _departmentRepository;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
 
-        public EmployeeController(IEmployeeRepository EmployeeRepository
-            ,IDepartmentRepository departmentRepository
-            ,IMapper mapper
-            )
+        public EmployeeController(  IUnitOfWork unitOfWork,IMapper mapper )
         {
-            _EmployeeReposirtory = EmployeeRepository;
-            _departmentRepository = departmentRepository;
-           _mapper = mapper;
+           _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         [HttpGet]  
@@ -32,12 +27,11 @@ namespace Company.PL.Controllers
             IEnumerable<Employee> employees;
              if (String.IsNullOrEmpty(SearchInput)) {
 
-                employees = _EmployeeReposirtory.getAll();
-
+                employees = _unitOfWork.EmployeeRepository.getAll();
             }
             else
             {
-                employees = _EmployeeReposirtory.GetByName(SearchInput);
+                employees = _unitOfWork.EmployeeRepository.GetByName(SearchInput);
             }
 
 
@@ -52,7 +46,7 @@ namespace Company.PL.Controllers
         [HttpGet]
         public IActionResult Create()
         {
-            var departments = _departmentRepository.getAll();
+            var departments = _unitOfWork.DepartmentRepository.getAll();
             ViewData["departments"] = departments;
             return View();
         }
@@ -76,7 +70,7 @@ namespace Company.PL.Controllers
 
                 var Employee = _mapper.Map<Employee>(model);
 
-                int count = _EmployeeReposirtory.add(Employee);
+                int count = _unitOfWork.EmployeeRepository.add(Employee);
                 if (count > 0)
                 {
                     TempData["Massage"] = "Employee is Created successfully!!!";
@@ -91,7 +85,7 @@ namespace Company.PL.Controllers
         public IActionResult Details(int? id, string viewName = "Details")
         {    
             if (id is null) return BadRequest("InValid Id");
-            var employee = _EmployeeReposirtory.Get(id.Value);
+            var employee = _unitOfWork.EmployeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, Message = $"Employee with id {id} is not found" });
             return View(viewName, employee);
 
@@ -102,10 +96,10 @@ namespace Company.PL.Controllers
         [HttpGet]
         public IActionResult Edit(int? id)
         {
-            var departments = _departmentRepository.getAll();
+            var departments = _unitOfWork.DepartmentRepository.getAll();
             ViewData["departments"] = departments;
             if (id is null) return BadRequest("InValid Id");
-            var employee = _EmployeeReposirtory.Get(id.Value);
+            var employee = _unitOfWork.EmployeeRepository.Get(id.Value);
             if (employee is null) return NotFound(new { StatusCode = 404, Message = $"department with id {id} is not found" });
             var EmployeeDTO = new CreateEmployeeDto
             {
@@ -144,7 +138,7 @@ namespace Company.PL.Controllers
                     Phone = model.Phone,
                     Salary = model.Salary
                 };
-                var count = _EmployeeReposirtory.Update(Employee);
+                var count = _unitOfWork.EmployeeRepository.Update(Employee);
                     if (count > 0)
                     {
                         return RedirectToAction(nameof(Index));
@@ -176,7 +170,7 @@ namespace Company.PL.Controllers
             {
                 if (id == employee.Id)
                 {
-                    var count = _EmployeeReposirtory.delete(employee);
+                    var count = _unitOfWork.EmployeeRepository.delete(employee);
                     if (count > 0)
                     {
                         return RedirectToAction(nameof(Index));
