@@ -1,10 +1,13 @@
 using System.Diagnostics;
 using Company.PL.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace Company.PL.Controllers;
-
-public class HomeController : Controller
+namespace Company.PL.Controllers
+   { 
+    
+    [Authorize]
+    public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
 
@@ -29,3 +32,5 @@ public class HomeController : Controller
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
+   }
+

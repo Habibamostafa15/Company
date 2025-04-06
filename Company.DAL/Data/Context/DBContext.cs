@@ -1,5 +1,7 @@
 ﻿using Company.DAL.Dtos;
 using Company.DAL.Entites;
+using Company.DAL.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Company.DAL.Data.Context
 {
-    public class DBContext : DbContext
+    public class DBContext : IdentityDbContext<AppUser>
     {
         public DBContext(DbContextOptions <DBContext> options ) : base (options)
             {    
