@@ -8,8 +8,11 @@ using NuGet.Protocol.Core.Types;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 using System.Threading.Tasks;
 using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Authorization;
 namespace Company.PL.Controllers
 {    // MVC Controller
+
+    [Authorize]
     public class DepartmentController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
