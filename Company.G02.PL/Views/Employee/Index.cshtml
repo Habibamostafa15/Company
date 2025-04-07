@@ -4,15 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-@* <h1>All Employee</h1> *@
-@* <dev   class="m-5 alert alert-danger">  *@
-@*  <p> @ViewData["Massage"]  </p> *@
-@* </dev> *@
+<h1>All Employee</h1>
 
-
-@* <dev class="m-5 alert alert-danger">  *@
-@*    <p> @ViewBag.Massage  </p> *@
-@* </dev> *@
 
 @if (!string.IsNullOrEmpty(TempData["Massage"] as string))
        {
@@ -85,7 +78,7 @@
                     <td>@item.CreateAt</td>
                    
 
-                    <partial name="_ButtonPartialView"  model="@item.Id" />
+                    <partial name="_ButtonPartialView"  model="@item.Id.ToString()" />
                     
 
 

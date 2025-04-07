@@ -1,0 +1,89 @@
+﻿@model IEnumerable<UserToReturnDto>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>All Users</h1>
+
+
+
+<form>
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <input id="SearchInput" placeholder="Search By Name" name="SearchInput" class="form-control" />
+            </div>
+            <div class="col-6">
+                <input type="submit" class="btn btn-success" value="Search" />
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<br />
+<br />
+
+
+
+@if (Model.Count() > 0)
+{
+
+    <table class="table table table-hover table-striped">
+
+        <tr>
+            <th>Id</th>
+            <th>User Name</th>
+            <th>Frist Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Role</th>
+      
+            <th>Details</th>
+            <th>Update</th>
+            <th>delete</th>
+
+        </tr>    
+        <tbody>
+            @foreach(var item in Model)
+            { <tr>
+                 
+
+                  <td>@item.Id</td>
+                    <td>@item.UserName</td>
+                    <td>@item.FirstName</td>
+                    <td>@item.LastName</td>
+                    <td>@item.Email</td>
+                    <td>
+                        @foreach (var role in @item.Roles)
+                        {  <span>@role</span> }
+                        
+                    </td>
+                  
+                   
+
+                    <partial name="_ButtonPartialView"  model="@item.Id.ToString()" />
+                    
+
+
+
+
+            </tr>
+                
+            }
+
+     </tbody>
+    
+
+    </table>
+}else
+{ <dev class="mt-md-4 alert-warning alert-warning">
+
+    <h4>There is No Users:(
+    </h4>
+</dev>
+
+}
+
+
