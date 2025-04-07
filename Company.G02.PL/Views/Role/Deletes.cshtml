@@ -1,0 +1,17 @@
+﻿@model RoleToReturnDto
+@{
+    ViewData["Title"] = "Deletes";
+}
+
+<h1>Delete role</h1>
+<br />
+<br />
+
+<form asp-action="Deletes" enctype="multipart/form-data">
+
+    <partial name="PartialViews/DetalsDeletePartialView" />
+  
+
+    <input type="submit" value="Delete" class="btn btn-danger" />
+    <a asp-action="Index" class="btn btn-light">Back To List</a>
+</form>
