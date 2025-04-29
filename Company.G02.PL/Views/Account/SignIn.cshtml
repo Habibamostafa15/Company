@@ -1,32 +1,369 @@
 ﻿@model SignInDto
 
 @{
-    ViewData["Title"] = "SignIn";
-    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    ViewData["Title"] = "Sign In";
+    Layout = null; // Standalone page without a shared layout
 }
 
-<div class="main-agileinfo">
-	<div class="agileits-top">
-		<div asp-validation-summary="All"></div>
-		<form action="#" method="post">
-		
-			<input class="text email" asp-for="Email" placeholder="Email" required="">
-			<input class="text" asp-for="Password" placeholder="Password" required="">
-			
-			<div class="wthree-text">
-				<label class="anim">
-					<input asp-for="RememberMe" class="checkbox">
-					<span>RememberMe</span>
-				</label>
-				<div class="clear"> </div>
-			</div>
-			<input type="submit" value="SIGNIP">
-		</form>
-		<p>Don't have an Account? <a asp-action="SignUp"> Create New Account ? </a></p>
-		<p> <a asp-action="ForgetPassword">  Forget Password</a></p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Securely log in to your StatusFlow account dashboard." />
+    <meta name="keywords" content="login, sign in, StatusFlow, dashboard" />
+    <meta name="author" content="StatusFlow" />
+    <title>@ViewData["Title"] | StatusFlow</title>
 
-	</div>
-</div>
+    <!-- External Stylesheets -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+          integrity="sha512-Avb2QiuDEEvB4bZJYdft2mNjVShBftLdPG8B0jP4qV5kB2bB5fA1eA8B4B6gB8"
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+          rel="stylesheet" />
 
+    <style>
+        :root {
+            --primary: #1e40af;
+            --primary-hover: #1e3a8a;
+            --text: #111827;
+            --background: #f1f5f9;
+            --white: #ffffff;
+            --border: #d1d5db;
+            --shadow: rgba(0, 0, 0, 0.05);
+            --error: #dc2626;
+            --divider: #e5e7eb;
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
 
+        body {
+            background: var(--background);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .container {
+            max-width: 960px;
+            width: 100%;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 8px 16px var(--shadow);
+            padding: 3rem;
+            animation: slideIn 0.5s ease-in-out;
+        }
+
+        .login-form {
+            width: 100%;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo {
+            width: 180px; /* Increased size */
+            height: 180px; /* Increased size */
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid var(--primary); /* Border added */
+            margin-right: 10px; /* Margin between logo and text */
+        }
+
+        .logo-text {
+            font-size: 2.5rem; /* Slightly larger font size */
+            font-weight: 700;
+            color: var(--primary);
+            vertical-align: middle;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+            .form-header h1 {
+                font-size: 2rem;
+                font-weight: 700;
+                color: var(--text);
+            }
+
+            .form-header p {
+                color: #6b7280;
+                font-size: 1rem;
+                margin-top: 0.75rem;
+            }
+
+        .form-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 2rem;
+            position: relative;
+        }
+
+        .left-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            flex: 2;
+        }
+
+        .input-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        label {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+            .input-field:focus {
+                outline: none;
+                border-color: var(--primary);
+                box-shadow: 0 0 0 4px rgba(30, 64, 175, 0.15);
+            }
+
+        .form-icon {
+            position: absolute;
+            top: 2.25rem;
+            left: 0.75rem;
+            color: #9ca3af;
+            font-size: 1rem;
+        }
+
+        .submit-btn {
+            padding: 0.75rem;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.2s ease;
+            width: 100%;
+        }
+
+            .submit-btn:hover {
+                background: var(--primary-hover);
+                transform: translateY(-2px);
+            }
+
+        .divider {
+            position: absolute;
+            left: 66%;
+            transform: translateX(-50%);
+            height: 80%;
+            width: 1px;
+            background: var(--divider);
+        }
+
+        .right-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            flex: 1;
+        }
+
+        .social-btn {
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 1rem;
+            text-align: center;
+            text-decoration: none;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: background 0.3s ease;
+            position: relative;
+        }
+
+        .google-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .facebook-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .flex-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text);
+        }
+
+        .forgot-password {
+            color: var(--primary);
+            text-decoration: none;
+        }
+
+            .forgot-password:hover {
+                color: var(--primary-hover);
+                text-decoration: underline;
+            }
+
+        .signup-link {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.95rem;
+            color: #6b7280;
+        }
+
+            .signup-link a {
+                color: var(--primary);
+                font-weight: 500;
+                text-decoration: none;
+            }
+
+                .signup-link a:hover {
+                    color: var(--primary-hover);
+                    text-decoration: underline;
+                }
+
+        .text-danger {
+            color: var(--error);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <section class="login-form" aria-labelledby="form-title">
+            <div class="logo-container">
+                <img src="~/images/logo.jpg" alt="StatusFlow Logo" class="logo" loading="lazy" />
+                <span class="logo-text">StatusFlow</span>
+            </div>
+
+            <header class="form-header">
+                <h1 id="form-title">Welcome Back</h1>
+                <p>Sign in to access your StatusFlow dashboard</p>
+            </header>
+
+            <form asp-action="SignIn" method="post" role="form" aria-label="Sign In Form">
+                <div class="form-container">
+                    <div class="left-section">
+                        <div class="input-stack">
+                            <div class="form-group">
+                                <label asp-for="Email">Email</label>
+                                <i class="fas fa-envelope form-icon" aria-hidden="true"></i>
+                                <input asp-for="Email"
+                                       class="input-field"
+                                       type="email"
+                                       placeholder="name@statusflow.com"
+                                       required
+                                       aria-required="true"
+                                       aria-describedby="email-error" />
+                                <span asp-validation-for="Email" class="text-danger" id="email-error"></span>
+                            </div>
+
+                            <div class="form-group">
+                                <label asp-for="Password">Password</label>
+                                <i class="fas fa-lock form-icon" aria-hidden="true"></i>
+                                <input asp-for="Password"
+                                       class="input-field"
+                                       type="password"
+                                       placeholder="••••••••"
+                                       required
+                                       aria-required="true"
+                                       aria-describedby="password-error" />
+                                <span asp-validation-for="Password" class="text-danger" id="password-error"></span>
+
+                                <!-- Forgot Password Link -->
+                                <div class="forgot-password-container">
+                                    <a href="#" class="forgot-password" aria-label="Forgot Password?">Forgot Password?</a>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="submit-btn" aria-label="Sign In">Sign In</button>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="right-section">
+                        <a href="#" class="social-btn google-btn">
+                            <img src="https://www.svgrepo.com/show/303108/google-icon-logo.svg" alt="Google Logo" style="width: 20px; height: 20px;">
+                            Google
+                        </a>
+                        <a href="#" class="social-btn facebook-btn">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/5/51/Facebook_f_logo_%282019%29.svg" alt="Facebook Logo" style="width: 20px; height: 20px;">
+                            Facebook
+                        </a>
+                    </div>
+                </div>
+
+                <div class="flex-row">
+                    <label class="remember-me">
+                        <input type="checkbox" asp-for="RememberMe" aria-label="Remember me" /> Remember me
+                    </label>
+                </div>
+
+                <p class="signup-link">
+                    Don’t have an account? <a asp-action="SignUp" aria-label="Sign Up">Sign up</a>
+                </p>
+            </form>
+        </section>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const form = document.querySelector('form');
+            const submitBtn = form.querySelector('.submit-btn');
+
+            form.addEventListener('submit', (e) => {
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Signing In...';
+            });
+        });
+    </script>
+</body>
+</html>

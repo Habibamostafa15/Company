@@ -85,19 +85,18 @@ namespace Company.PL.Controllers
         [HttpGet]
         public async Task<IActionResult> Details(int? id)
         {
-            if (id is null) return BadRequest("InValid Id");
-            var employee = await _unitOfWork.EmployeeRepository.GetAsync(id.Value);
-            if (employee is null) return NotFound(new { StatusCode = 404, Message = $"Employee with id {id} is not found" });
+            if (id is null)
+                return BadRequest("Invalid Id");
 
-            var dto = new CreateEmployeeDto
-            {
-                Name = employee.Name,
-                Salary = employee.Salary,
-                DepartmentId = employee.DepartmentId
-            };
+            var employee = await _unitOfWork.EmployeeRepository.GetAsync(id.Value);
+            if (employee is null)
+                return NotFound(new { StatusCode = 404, Message = $"Employee with id {id} is not found" });
+
+            // Use AutoMapper to map the complete Employee to CreateEmployeeDto
+            var dto = _mapper.Map<CreateEmployeeDto>(employee);
             return View(dto);
         }
-        
+
 
 
 
@@ -191,6 +190,15 @@ namespace Company.PL.Controllers
 
             return View(model);
         }
+
+        [HttpGet]
+        [AllowAnonymous] // Allow access from HomeController without login
+        public async Task<IActionResult> LastEmployees()
+        {
+            var lastEmployees = await _unitOfWork.EmployeeRepository.GetLastEmployeesAsync(5);
+            return PartialView("_LastEmployeesPartial", lastEmployees);
+        }
+
 
 
     }

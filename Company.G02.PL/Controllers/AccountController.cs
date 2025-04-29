@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages.Manage;
 using System.Threading.Tasks;
 using Email = Company.PL.Helpers.Email;
-using Company.PL.Helpers;
+//using Company.PL.Helpers;
 using Microsoft.AspNetCore.Authorization;
 namespace Company.PL.Controllers
 {
@@ -30,6 +30,7 @@ namespace Company.PL.Controllers
         {
             return View();
         }
+
 
         //p@ssW0rd
 
@@ -77,6 +78,7 @@ namespace Company.PL.Controllers
             return View();
         }
 
+        [HttpPost] // Add this to explicitly mark it as POST
         public async Task<IActionResult> SignIn(SignInDto model)
         {
             if (ModelState.IsValid)
@@ -92,9 +94,9 @@ namespace Company.PL.Controllers
                             return RedirectToAction("Index", "Home");
                     }
                 }
-                ModelState.AddModelError("", "Invalid SignIn !");
+                ModelState.AddModelError("", "Invalid SignIn!");
             }
-            return View();
+            return View(model); // Pass the model back to preserve input
         }
 
         public new async Task<IActionResult> SignOut()
@@ -197,11 +199,3 @@ namespace Company.PL.Controllers
         }
     }
 }
-
-
-
-
-
-
-
-

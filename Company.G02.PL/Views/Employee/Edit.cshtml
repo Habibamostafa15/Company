@@ -1,28 +1,256 @@
 ﻿@model CreateEmployeeDto
+@using Company.DAL.Dtos
+
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Employee";
 }
 
-<h1>Edit Employee </h1>
-<br/>
-<br/>
-<form asp-action="Edit" enctype="multipart/form-data">
+<!-- Custom CSS -->
+<style>
+    /* General Styling */
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #f8fafc;
+    }
 
-    <partial name="PartialViews/CreateEditPartialView" />
-    <input asp-for="ImageName" hidden />
+    .edit-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
 
-    <div class="my-3">
-        <input type="submit" value="Save" class="btn btn-warning" />
-        <a asp-action="Index" class="btn btn-secondary">Back To Employees</a>
+    /* Profile Header */
+    .profile-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        background: linear-gradient(145deg, #ffffff, #f9fafb);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+        transition: transform 0.3s ease;
+    }
+
+    .profile-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .profile-header {
+        background: linear-gradient(135deg, #3b82f6, #1e40af);
+        padding: 1.5rem;
+        text-align: center;
+        color: #fff;
+    }
+
+    .profile-img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 50%;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 0.75rem;
+    }
+
+    .profile-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        font-weight: 600;
+        color: #fff;
+        text-transform: uppercase;
+        border: 3px solid #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 0.75rem;
+    }
+
+    .profile-name {
+        font-size: 1.75rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .profile-email {
+        font-size: 1rem;
+        opacity: 0.9;
+    }
+
+    /* Form Card */
+    .form-card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        background: #fff;
+        padding: 1.5rem;
+    }
+
+    .form-card h5 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin-bottom: 1rem;
+        border-bottom: 2px solid #e5e7eb;
+        padding-bottom: 0.5rem;
+    }
+
+    /* Form Inputs (for partial) */
+    .form-label {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #4b5563;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .form-control, .form-select {
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+        padding: 0.75rem;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        outline: none;
+    }
+
+    .form-check-label {
+        font-size: 0.95rem;
+        color: #1f2937;
+    }
+
+    .form-check-input {
+        margin-top: 0.35rem;
+    }
+
+    /* Validation Errors */
+    .field-validation-error {
+        color: #ef4444;
+        font-size: 0.85rem;
+        margin-top: 0.25rem;
+    }
+
+    .input-validation-error {
+        border-color: #ef4444 !important;
+    }
+
+    /* Action Buttons */
+    .action-btn {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 0.5rem 1.5rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin: 0.5rem 0.25rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .action-btn i {
+        margin-right: 6px;
+    }
+
+    .btn-save {
+        border: 2px solid #eab308;
+        color: #eab308;
+    }
+
+    .btn-save:hover {
+        background-color: #eab308;
+        color: #fff;
+    }
+
+    .btn-back {
+        border: 2px solid #6b7280;
+        color: #6b7280;
+    }
+
+    .btn-back:hover {
+        background-color: #6b7280;
+        color: #fff;
+    }
+
+    /* Responsive */
+    @@media (max-width: 768px) {
+        .profile-img, .profile-avatar {
+            width: 60px;
+            height: 60px;
+        }
+
+        .profile-name {
+            font-size: 1.5rem;
+        }
+
+        .form-card {
+            padding: 1rem;
+        }
+    }
+</style>
+
+<!-- Edit Container -->
+<div class="edit-container">
+    <!-- Profile Header -->
+    <div class="profile-card">
+        <div class="profile-header">
+            @if (!string.IsNullOrEmpty(Model.ImageName))
+            {
+                <img src="@Url.Content("~/files/images/" + Model.ImageName)"
+                     class="profile-img"
+                     alt="@(Model.Name ?? "Employee")'s profile image"
+                     onerror="this.src='@Url.Content("~/images/logo.jpg")'" />
+            }
+            else
+            {
+                var bgColor = string.IsNullOrEmpty(Model.Name) ? "#6b7280" : $"hsl({(Model.Name.GetHashCode() % 360 + 360) % 360}, 70%, 50%)";
+                <div class="profile-avatar" style="background-color: @bgColor;">
+                    @(string.IsNullOrEmpty(Model.Name) ? "E" : Model.Name[0].ToString())
+                </div>
+            }
+            <h1 class="profile-name">@(Model.Name ?? "Edit Employee")</h1>
+            <p class="profile-email">@(Model.Email ?? "No email provided")</p>
+        </div>
     </div>
 
+    <!-- Form Card -->
+    <div class="form-card">
+        <h5>Edit Employee Details</h5>
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <!-- Hidden Fields -->
+            <input asp-for="Id" hidden />
+            <input asp-for="ImageName" hidden />
+            <input asp-for="CreateAt" hidden />
 
-</form>
+            <!-- Partial View for Form Fields -->
+            <partial name="PartialViews/CreateEditPartialView" model="Model" />
 
-@section validation {
+            <!-- Department Name (Read-Only) -->
+            <div class="mb-3">
+                <label class="form-label">Department</label>
+                <p class="form-control-plaintext">
+                    @(Model.Name != null ? Model.Name : (Model.DepartmentId.HasValue ? Model.DepartmentId.ToString() : "N/A"))
+                </p>
+            </div>
 
+            <!-- Actions -->
+            <div class="d-flex flex-wrap">
+                <button type="submit" class="action-btn btn-save">
+                    <i class="bi bi-save"></i> Save
+                </button>
+                <a asp-controller="Employee" asp-action="Index" class="action-btn btn-back">
+                    <i class="bi bi-arrow-left"></i> Back to Employees
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
     <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
     <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-
-
 }

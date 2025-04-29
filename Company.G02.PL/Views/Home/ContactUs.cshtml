@@ -1,0 +1,113 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold display-4 text-gradient animate-title">Let’s Connect</h1>
+        <p class="lead text-muted">Have a question, idea, or just want to say hi? We’d love to hear from you.</p>
+    </div>
+
+    <div class="row g-4 align-items-stretch">
+        <!-- Contact Info Card -->
+        <div class="col-lg-5">
+            <div class="card shadow-lg border-0 h-100 rounded-4 p-4 bg-light contact-info" style="border: 1px solid blue !important;">
+                <div class="card-body">
+                    <h4 class="fw-bold mb-4"><i class="bi bi-person-lines-fill me-2 text-primary"></i>Contact Details</h4>
+                    <p class="mb-3"><i class="bi bi-geo-alt-fill me-2 text-danger"></i><strong>Location:</strong> Cairo, Egypt</p>
+                    <p class="mb-3"><i class="bi bi-envelope-fill me-2 text-success"></i><strong>Email:</strong> info@statusflow.com</p>
+                    <p class="mb-3"><i class="bi bi-telephone-fill me-2 text-info"></i><strong>Phone:</strong> +20 1555555555</p>
+
+                    <div class="mt-4">
+                        <span class="fw-semibold">Connect with us:</span>
+                        <div class="mt-3 d-flex gap-3">
+                            <a href="#" class="btn btn-outline-primary btn-icon rounded-circle" title="Facebook"><i class="bi bi-facebook fs-5"></i></a>
+                            <a href="#" class="btn btn-outline-danger btn-icon rounded-circle" title="Instagram"><i class="bi bi-instagram fs-5"></i></a>
+                            <a href="#" class="btn btn-outline-info btn-icon rounded-circle" title="LinkedIn"><i class="bi bi-linkedin fs-5"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-7">
+            <div class="card shadow-lg border-0 h-100 rounded-4 p-4 contact-form" style="border: 1px solid blue !important;">
+                <div class="card-body">
+                    <h4 class="fw-bold mb-4"><i class="bi bi-chat-dots-fill me-2 text-primary"></i>Send Us a Message</h4>
+                    <form method="post" asp-action="Contact">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold"><i class="bi bi-person-fill me-1 text-primary"></i>Full Name</label>
+                                <input type="text" name="Name" class="form-control form-control-lg rounded-3" placeholder="John Doe" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold"><i class="bi bi-envelope-at-fill me-1 text-primary"></i>Email Address</label>
+                                <input type="email" name="Email" class="form-control form-control-lg rounded-3" placeholder="example@email.com" required />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold"><i class="bi bi-tag-fill me-1 text-primary"></i>Subject</label>
+                                <input type="text" name="Subject" class="form-control form-control-lg rounded-3" placeholder="e.g. Business Inquiry" />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label fw-semibold"><i class="bi bi-chat-left-text-fill me-1 text-primary"></i>Message</label>
+                                <textarea name="Message" rows="5" class="form-control form-control-lg rounded-3" placeholder="Your message here..." required></textarea>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <button type="submit" class="btn btn-primary w-100 rounded-pill py-3 fw-semibold shadow-sm">
+                                <i class="bi bi-send-fill me-2"></i>Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .text-gradient {
+        background: linear-gradient(90deg, #0d6efd, #6610f2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+
+    .animate-title {
+        animation: fadeInDown 1s ease-in-out;
+    }
+
+
+    .btn-icon {
+        width: 45px;
+        height: 45px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .btn-icon:hover {
+        transform: scale(1.1);
+    }
+
+    .form-control:focus {
+        border-color: #0d6efd;
+        box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.2);
+    }
+
+    .card {
+        transition: all 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 0.75rem 2rem rgba(0, 0, 0, 0.1);
+    }
+
+    .contact-form, .contact-info {
+        background-color: #ffffff;
+    }
+
+</style>
