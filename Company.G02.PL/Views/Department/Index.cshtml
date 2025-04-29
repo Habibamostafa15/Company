@@ -1,59 +1,413 @@
 ﻿@model IEnumerable<Department>
+@using Company.DAL.Entites
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Department List";
 }
 
-<h1>All department</h1>
+<!-- Custom CSS -->
+<style>
+    /* General Styling */
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background-color: #f8fafc;
+    }
 
-<br />
-<br />
-<a asp-action="Create" asp-controller="Department" class="btn btn-primary">createDepartment</a>
-<br />
-<br />
+    .card {
+        border: none;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+        background: linear-gradient(145deg, #ffffff, #f9fafb);
+        transition: transform 0.3s ease;
+    }
 
-@if (Model.Count() > 0)
+    .card:hover {
+        transform: translateY(-5px);
+    }
+
+    .card-header {
+        background: none;
+        border-bottom: 1px solid #e5e7eb;
+        padding: 1.5rem;
+    }
+
+    .card-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1f2937;
+    }
+
+    /* Department Avatar */
+    .dept-avatar {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #fff;
+        text-transform: uppercase;
+    }
+
+    .dept-avatar-grid {
+        width: 80px;
+        height: 80px;
+        font-size: 2.5rem;
+        margin: 0 auto;
+        display: flex;
+    }
+
+    /* Search Form */
+    .search-input {
+        border-radius: 8px 0 0 8px;
+        border: 1px solid #d1d5db;
+        padding: 0.75rem;
+        transition: border-color 0.3s ease;
+    }
+
+    .search-input:focus {
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .search-btn {
+        border-radius: 0 8px 8px 0;
+        padding: 0.75rem 1.5rem;
+        transition: transform 0.2s ease, background-color 0.3s ease;
+    }
+
+    .search-btn:hover {
+        transform: scale(1.05);
+    }
+
+    /* Table Styling (List View) */
+    .table {
+        border-collapse: separate;
+        border-spacing: 0;
+        background-color: #fff;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+
+    .table th {
+        background-color: #f1f5f9;
+        color: #374151;
+        font-weight: 600;
+        padding: 1rem;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+    }
+
+    .table td {
+        padding: 1rem;
+        vertical-align: middle;
+        border-bottom: 1px solid #e5e7eb;
+    }
+
+    .table tr:hover {
+        background-color: #f9fafb;
+    }
+
+    /* Grid View */
+    .dept-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1.5rem;
+        padding: 1rem;
+    }
+
+    .dept-card {
+        background: #fff;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        padding: 1.5rem;
+        text-align: center;
+        transition: transform 0.3s ease;
+    }
+
+    .dept-card:hover {
+        transform: translateY(-5px);
+    }
+
+    .dept-card h6 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #1f2937;
+        margin: 0.75rem 0;
+    }
+
+    .dept-card p {
+        font-size: 0.95rem;
+        color: #4b5563;
+        margin: 0.5rem 0;
+    }
+
+    /* Action Buttons */
+    .action-btn {
+        background-color: #fff;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-size: 0.85rem;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        margin: 0.25rem;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+    }
+
+    .action-btn i {
+        margin-right: 6px;
+    }
+
+    .btn-details {
+        border: 2px solid #3b82f6;
+        color: #3b82f6;
+    }
+
+    .btn-details:hover {
+        background-color: #3b82f6;
+        color: #fff;
+    }
+
+    .btn-update {
+        border: 2px solid #22c55e;
+        color: #22c55e;
+    }
+
+    .btn-update:hover {
+        background-color: #22c55e;
+        color: #fff;
+    }
+
+    .btn-delete {
+        border: 2px solid #ef4444;
+        color: #ef4444;
+    }
+
+    .btn-delete:hover {
+        background-color: #ef4444;
+        color: #fff;
+    }
+
+    /* Toggle Buttons */
+    .view-toggle {
+        display: flex;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #d1d5db;
+        margin-left: 1rem;
+    }
+
+    .view-toggle button {
+        background-color: #fff;
+        border: none;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: #4b5563;
+        transition: all 0.3s ease;
+    }
+
+    .view-toggle button.active {
+        background-color: #3b82f6;
+        color: #fff;
+    }
+
+    .view-toggle button:hover:not(.active) {
+        background-color: #f1f5f9;
+    }
+
+    /* Alert Animation */
+    .alert {
+        animation: slideIn 0.5s ease-in-out;
+        border-radius: 8px;
+    }
+
+    @@keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Create Button */
+    .create-btn {
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: transform 0.2s ease;
+    }
+
+    .create-btn:hover {
+        transform: scale(1.05);
+    }
+
+    /* View Visibility */
+    .list-view, .grid-view {
+        transition: opacity 0.3s ease;
+    }
+
+    .hidden {
+        display: none;
+    }
+</style>
+
+<!-- Top Message Alert -->
+@if (!string.IsNullOrEmpty(TempData["Message"] as string))
 {
-
-    <table class="table table table-hover table-striped">
-
-        <tr>
-            <th>Code</th>
-            <th>Name</th>
-            <th>Date Of Creation</th>
-            <th>Details</th>
-            <th>Update</th>
-            <th>delete</th>
-        </tr>    
-        <tbody>
-            @foreach(var item in Model)
-            { <tr>
-                <td>@item.code</td>
-                  <td>@item.name</td>
-                    <td>@item.createAt</td>
-
-
-                    <partial name="_ButtonPartialView" model="@item.Id.ToString()" />
-
-
-
-
-
-                </tr>
-                
-            }
-
-     </tbody>
-    
-
-    </table>
-}else
-{ <dev class="mt-md-4 alert-warning alert-danger">
-
-    <h4>There is No Department:(
-    </h4>
-</dev>
-
+    <div class="alert alert-@TempData["MessageType"] alert-dismissible fade show mt-3 mb-4" role="alert">
+        @TempData["Message"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 }
 
+<!-- Search Form Card -->
+<div class="card shadow mb-4">
+    <div class="card-header">
+        <h5 class="card-title">Search Departments</h5>
+    </div>
+    <div class="card-body">
+        <form asp-action="Index" asp-controller="Department" method="get">
+            <div class="input-group">
+                <input id="SearchInput" placeholder="Search by Code or Name" name="SearchInput" class="form-control search-input" aria-label="Search departments" />
+                <button type="submit" class="btn btn-success search-btn" aria-label="Search">
+                    <i class="bi bi-search"></i>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
 
+<!-- Department Views Card -->
+<div class="card shadow">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="card-title mb-0">Department List</h5>
+        <div class="d-flex align-items-center">
+            <a asp-action="Create" asp-controller="Department" class="btn btn-success create-btn">Create Department</a>
+            <div class="view-toggle">
+                <button id="listViewBtn" class="view-btn active" onclick="toggleView('list')">List</button>
+                <button id="gridViewBtn" class="view-btn" onclick="toggleView('grid')">Grid</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        @if (Model.Any())
+        {
+            <!-- List View -->
+            <div class="list-view">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Avatar</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Date of Creation</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model)
+                            {
+                                <!-- Generate dynamic background color based on name -->
+                                var bgColor = string.IsNullOrEmpty(item.name) ? "#6b7280" : $"hsl({(item.name.GetHashCode() % 360 + 360) % 360}, 70%, 50%)";
+                                <tr>
+                                    <td>
+                                        <div class="dept-avatar" style="background-color: @bgColor;">
+                                            @(string.IsNullOrEmpty(item.name) ? "D" : item.name[0].ToString())
+                                        </div>
+                                    </td>
+                                    <td>@item.code</td>
+                                    <td>@item.name</td>
+                                    <td>@item.createAt.ToString("dd MMM yyyy")</td>
+                                    <td>
+                                        <a asp-action="Details" asp-controller="Department" asp-route-id="@item.Id" class="action-btn btn-details">
+                                            <i class="bi bi-info-circle"></i> Details
+                                        </a>
+                                        <a asp-action="Edit" asp-controller="Department" asp-route-id="@item.Id" class="action-btn btn-update">
+                                            <i class="bi bi-pencil"></i> Update
+                                        </a>
+                                        <a asp-action="Deletes" asp-controller="Department" asp-route-id="@item.Id" class="action-btn btn-delete" onclick="return confirm('Are you sure you want to delete @(string.IsNullOrEmpty(item.name) ? "this department" : item.name)?');">
+                                            <i class="bi bi-trash"></i> Delete
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Grid View -->
+            <div class="grid-view hidden">
+                <div class="dept-grid">
+                    @foreach (var item in Model)
+                    {
+                        <!-- Generate dynamic background color based on name -->
+                        var bgColor = string.IsNullOrEmpty(item.name) ? "#6b7280" : $"hsl({(item.name.GetHashCode() % 360 + 360) % 360}, 70%, 50%)";
+                        <div class="dept-card">
+                            <div class="dept-avatar dept-avatar-grid" style="background-color: @bgColor;">
+                                @(string.IsNullOrEmpty(item.name) ? "D" : item.name[0].ToString())
+                            </div>
+                            <h6>@item.name</h6>
+                            <p><i class="bi bi-hash me-2"></i>@item.code</p>
+                            <p><i class="bi bi-calendar me-2"></i>@item.createAt.ToString("dd MMM yyyy")</p>
+                            <div>
+                                <a asp-action="Details" asp-controller="Department" asp-route-id="@item.Id" class="action-btn btn-details">
+                                    <i class="bi bi-info-circle"></i> Details
+                                </a>
+                                <a asp-action="Edit" asp-controller="Department" asp-route-id="@item.Id" class="action-btn btn-update">
+                                    <i class="bi bi-pencil"></i> Update
+                                </a>
+                                <a asp-action="Deletes" asp-controller="Department" asp-route-id="@item.Id" class="action-btn btn-delete" onclick="return confirm('Are you sure you want to delete @(string.IsNullOrEmpty(item.name) ? "this department" : item.name)?');">
+                                    <i class="bi bi-trash"></i> Delete
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-warning d-flex align-items-center" role="alert">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <div>
+                    No departments found. <a asp-action="Create" asp-controller="Department" class="alert-link">Create one now</a>.
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+<!-- JavaScript for View Toggle -->
+@section Scripts {
+    <script>
+        function toggleView(view) {
+            const listView = document.querySelector('.list-view');
+            const gridView = document.querySelector('.grid-view');
+            const listBtn = document.getElementById('listViewBtn');
+            const gridBtn = document.getElementById('gridViewBtn');
+
+            if (view === 'list') {
+                listView.classList.remove('hidden');
+                gridView.classList.add('hidden');
+                listBtn.classList.add('active');
+                gridBtn.classList.remove('active');
+            } else {
+                listView.classList.add('hidden');
+                gridView.classList.remove('hidden');
+                listBtn.classList.remove('active');
+                gridBtn.classList.add('active');
+            }
+        }
+    </script>
+}

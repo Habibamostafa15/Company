@@ -26,5 +26,17 @@ namespace Company.BLL.Reposotiry
             return await _dBContext.Employees.Include(E=>E.department).Where(E => E.Name.ToLower().Contains(Name.ToLower())).ToListAsync(); 
 
         }
+
+        public async Task<List<Employee>> GetLastEmployeesAsync(int count)
+        {
+            return await _dBContext.Employees
+                .Include(e => e.department)
+                .OrderByDescending(e => e.CreateAt) // or HiringDate, based on what “recent” means to you
+                .Take(count)
+                .ToListAsync();
+        }
+
+
+
     }
 }

@@ -1,0 +1,133 @@
+﻿@model IEnumerable<Employee>
+
+<!-- Custom CSS Styles -->
+<style>
+    /* Overall container styling */
+    .employee-container {
+        margin-top: 50px;
+        margin-bottom: 50px;
+    }
+
+    /* Enhanced title container */
+    .enhanced-title-wrapper {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+    }
+
+    .enhanced-title {
+        background: #fff;
+        border: 2px solid #007bff;
+        border-radius: 12px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        padding: 20px 40px;
+        transition: transform 0.3s ease;
+        text-align: center;
+    }
+
+        .enhanced-title:hover {
+            transform: scale(1.03);
+        }
+
+        .enhanced-title h2 {
+            background: linear-gradient(135deg, #007bff, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 28px;
+            font-weight: 700;
+            margin: 0;
+        }
+
+    /* Employee card styling */
+    .employee-card {
+        border: 1px solid #007bff;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
+        transition: transform 0.3s ease;
+        overflow: hidden;
+    }
+
+        .employee-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .employee-card .card-body {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .employee-card img {
+            border: 2px solid #007bff;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 20px;
+        }
+
+        .employee-card .card-title {
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
+
+        .employee-card .card-text {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        .employee-card .card-footer {
+            background-color: #f8f9fa;
+            padding: 10px 20px;
+            text-align: center;
+        }
+
+        .employee-card .btn {
+            font-size: 14px;
+            padding: 8px 20px;
+            border-radius: 20px;
+        }
+</style>
+
+@if (Model != null && Model.Any())
+{
+    <div class="container employee-container">
+        <!-- Enhanced Title -->
+        <div class="enhanced-title-wrapper">
+            <div class="enhanced-title">
+                <h2>Recent 6 Employee Registrations</h2>
+            </div>
+        </div>
+
+        <div class="row">
+            @foreach (var emp in Model)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card employee-card">
+                        <!-- Employee Information -->
+                        <div class="card-body">
+                            <img src="~/files/images/@emp.ImageName"
+                                 alt="@emp.Name" />
+                            <div>
+                                <h5 class="card-title text-primary">@emp.Name</h5>
+                                <p class="card-text text-muted"><strong>Department:</strong> @emp.department?.name</p>
+                                <p class="card-text text-muted"><strong>Joined:</strong> @emp.CreateAt.ToShortDateString()</p>
+                            </div>
+                        </div>
+                        <!-- View Profile Button -->
+                        <div class="card-footer">
+                            <a href="@Url.Action("Details", "Employee", new { id = emp.Id })"
+                               class="btn btn-outline-primary w-100">View Profile</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    <div class="alert alert-info text-center my-5">
+        No recent employees found.
+    </div>
+}

@@ -1,6 +1,6 @@
 ﻿using Company.BLL.Reposotiry;
 using Microsoft.AspNetCore.Mvc;
-using Company.BLL.Reposotiry;
+//using Company.BLL.Reposotiry;
 using Company.BLL.Interfaces;
 using Company.DAL.Dtos;
 using Company.DAL.Entites;
@@ -142,23 +142,25 @@ namespace Company.PL.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Deletes([FromRoute] int id, Department department)
+        public async Task<IActionResult> Deletes([FromRoute] int id, CreateDepartmentDto model)
         {
             if (ModelState.IsValid)
             {
-                if (id == department.Id)
+                var department = new Department
                 {
-               _unitOfWork.DepartmentRepository.deletes(department);
-                    var count = await _unitOfWork.CompleteAsync();
-                    if (count > 0)
-                    {
-                        return RedirectToAction(nameof(Index));
-                    }
+                    Id = id,
+                    code = model.code,
+                    name = model.name,
+                    createAt = model.createAt
+                };
+                _unitOfWork.DepartmentRepository.deletes(department);
+                var count = await _unitOfWork.CompleteAsync();
+                if (count > 0)
+                {
+                    return RedirectToAction(nameof(Index));
                 }
-
             }
-
-            return View(department);
+            return View(model);
         }
 
 

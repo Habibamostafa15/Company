@@ -3,77 +3,150 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Company.G02.PL</title>
+    <title>@ViewData["Title"] - StatusFlow</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Company.G02.PL.styles.css" asp-append-version="true" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <style>
+        /* Custom Styles */
+        header .navbar {
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+        }
+
+        .navbar-brand {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+            .navbar-brand img {
+                height: 40px;
+                margin-right: 10px;
+            }
+
+        .nav-link {
+            font-size: 1.2rem;
+            padding: 0.75rem 1rem;
+        }
+
+        .btn {
+            font-size: 1.1rem !important;
+            padding: 0.6rem 1.2rem !important;
+        }
+
+        footer {
+            font-size: 1.1rem;
+        }
+
+        body {
+            font-size: 1.15rem;
+        }
+    </style>
 </head>
 <body>
-    @*Start Header*@
+    @* Start Header *@
     <header>
-
-
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Company.G02.PL</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container">
+                <!-- Logo / Title -->
+                <a class="navbar-brand d-flex align-items-center" href="@Url.Action("Index", "Home")">
+                    <img src="~/images/logo.jpg" alt="Company Logo"> StatusFlow
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <!-- Navigation Links -->
+                <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+                    <!-- Left side links -->
+                    <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link" href="@Url.Action("Index", "Home")">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            <a class="nav-link" href="@Url.Action("Index", "Department")">Department</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Department" asp-action="Index">Department</a>
+                            <a class="nav-link" href="@Url.Action("Index", "Employee")">Employee</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="Index">Employee</a>
+                            <a class="nav-link" href="@Url.Action("Privacy", "Home")">Privacy</a>
                         </li>
-
+                        <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "ContactUs" ? "active" : "")">
+                            <a class="nav-link" href="@Url.Action("ContactUs", "Home")">ContactUs</a>
+                        </li>
                     </ul>
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class=" btn btn-success" asp-area="" asp-controller="User" asp-action="Index">Users</a>
-
-                        </li>
+                    <!-- Right side buttons -->
+                    <ul class="navbar-nav ml-auto d-flex align-items-center">
 
                         <li class="nav-item">
-                            <a class=" btn btn-secondary" asp-area="" asp-controller="Role" asp-action="Index">Roles</a>
-
+                            <a class="btn btn-signout" asp-area="" asp-controller="Account" asp-action="SignOut">Sign Out</a>
                         </li>
-
-                   
-                        <li class="nav-item">
-                            <a class=" btn btn-danger" asp-area="" asp-controller="Account" asp-action="SignOut">Sign Out</a>
-
-                        </li>
-
                     </ul>
-
                 </div>
             </div>
         </nav>
     </header>
-    @*End Header*@
-    @*start bodey*@
-    <div class="container">
-        <main role="main" class="pb-3">
+    @* End Header *@
+
+    @* Start Body *@
+    <main>
+        <div class="container mt-4">
             @RenderBody()
-        </main>
-    </div>
-    @*End Body*@
-@*start footer *@
-    <footer class="border-top footer text-muted">
+        </div>
+
+        <!-- Bootstrap JS and other scripts -->
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+        <!-- Render custom scripts from views -->
+        @RenderSection("Scripts", required: false)
+    </main>
+    @* End Body *@
+
+    @* Start Footer *@
+    <footer class="bg-dark text-white mt-5 p-4" role="contentinfo">
         <div class="container">
-            &copy; 2025 - Company.G02.PL - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            <div class="row">
+                <!-- About Section -->
+                <div class="col-sm-12 col-md-4 mb-3">
+                    <h5>StatusFlow</h5>
+                    <p>
+                        Streamline employee attendance registration and provide comprehensive administrative oversight of employee status.
+                    </p>
+                </div>
+
+                <!-- Contact Section -->
+                <div class="col-sm-12 col-md-4 mb-3">
+                    <h5>Contact</h5>
+                    <address>
+                        <p><i class="fas fa-envelope" aria-hidden="true"></i> Email: <a href="mailto:info@statusflow.com" class="text-white">info@statusflow.com</a></p>
+                        <p><i class="fas fa-phone" aria-hidden="true"></i> Phone: <a href="tel:+201555555555" class="text-white">+20 1555555555</a></p>
+                        <p><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Location: Cairo, Egypt
+                    </address>
+                </div>
+
+                <!-- Privacy Section -->
+                <div class="col-sm-12 col-md-4 mb-3">
+                    <h5>Privacy</h5>
+                    <nav>
+                        <ul class="list-unstyled">
+                            <li>
+                                <a href='@Url.Action("Privacy", "Home")' class="text-white">Privacy Policy</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+            <hr style="border-color: white; opacity: 0.5;">
+            <div class="text-center mt-3 text-white">
+                © @DateTime.Now.Year StatusFlow. All rights reserved.
+            </div>
         </div>
     </footer>
-    @*end footer*@
+    @* End Footer *@
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
